@@ -1,7 +1,7 @@
 // src/user/application/services/create-user.service.ts
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user.repository';
-import { CreateUserCommand } from '../commands/create-user.command';
+import { CreateUserCommand } from '../commands/user.command';
 
 @Injectable()
 export class CreateUserService {

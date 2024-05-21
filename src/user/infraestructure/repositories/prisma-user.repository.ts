@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { ConflictException } from '@nestjs/common';
+import { UpdateUserDto } from 'src/user/application/dtos/update-user.dto';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -26,5 +27,23 @@ export class PrismaUserRepository implements UserRepository {
       }
       throw error;
     }
+  }
+  async findById(id: number): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+
+  async findByUsername(username: string): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { username } });
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { email } });
+  }
+
+  async update(id: number, user: UpdateUserDto): Promise<void> {
+    await this.prisma.user.update({
+      where: { id },
+      data: user,
+    });
   }
 }

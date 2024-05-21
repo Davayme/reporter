@@ -6,6 +6,7 @@ import { UserController } from './infraestructure/controllers/user.controller';
 
 import { CreateUserService } from './application/services/create-user.service';
 import { PrismaUserRepository } from './infraestructure/repositories/prisma-user.repository';
+import { UpdateUserService } from './application/services/update-user.service';
 
 @Module({
     controllers: [UserController],
@@ -16,7 +17,8 @@ import { PrismaUserRepository } from './infraestructure/repositories/prisma-user
         useExisting: PrismaUserRepository,
       },
       CreateUserService,
+      UpdateUserService,
     ],
-    exports: [CreateUserService],
+    exports: [CreateUserService, UpdateUserService],
   })
   export class UserModule {}
