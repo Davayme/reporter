@@ -1,8 +1,6 @@
+// src/user/application/commands/create-user.command.ts
+import { CreateUserDto } from '../dtos/create-user.dto';
+
 export class CreateUserCommand {
-    constructor(
-      public username: string,
-      public password: string,
-      public email: string,
-      public roleId: number
-    ) {}
-  }
+  constructor(public readonly userDto: CreateUserDto) {}
+}
