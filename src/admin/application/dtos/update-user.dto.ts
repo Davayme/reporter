@@ -1,5 +1,5 @@
-// src/user/application/dtos/update-user.dto.ts
-import { IsString, IsEmail, IsInt, MinLength, IsOptional } from 'class-validator';
+
+import { IsString, IsEmail, IsInt, MinLength, IsOptional, IsBoolean } from 'class-validator';
 
 export class UpdateUserDto {
   @IsString()
@@ -19,4 +19,12 @@ export class UpdateUserDto {
   @IsInt()
   @IsOptional()
   roleId?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  statusActive?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  statusVerified?: boolean;
 }

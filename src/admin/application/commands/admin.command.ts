@@ -1,11 +1,11 @@
-// src/user/application/commands/create-user.command.ts
-import { CreateUserDto} from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
-export class CreateUserCommand {
-  constructor(public readonly userDto: CreateUserDto) {}
-}
+export class GetAllUsersCommand {}
 
 export class UpdateUserCommand {
   constructor(public readonly id: number, public readonly userDto: UpdateUserDto) {}
+}
+
+export class DeleteUserCommand {
+  constructor(public readonly id: number) {}
 }
