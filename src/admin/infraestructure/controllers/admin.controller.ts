@@ -22,7 +22,7 @@ export class AdminController {
     return this.getAllUsersService.execute();
   }
 
-  @Patch(':id')
+  @Patch('users/:id')
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body(new ValidationPipe()) updateUserDto: UpdateUserDto
