@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateDatabaseConnectionDto } from './dto/create-database-connection.dto';
-import { UpdateDatabaseConnectionDto } from './dto/update-database-connection.dto';
+import { PrismaService } from '../../../common/prisma/prisma.service';
+import { CreateDatabaseConnectionDto } from '../../infrastructure/dto/create-database-connection.dto';
+import { UpdateDatabaseConnectionDto } from '../../infrastructure/dto/update-database-connection.dto';
 
 @Injectable()
 export class DatabaseConnectionService {

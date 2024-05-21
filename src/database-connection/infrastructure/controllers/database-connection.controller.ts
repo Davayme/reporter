@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
-import { DatabaseConnectionService } from './database-connection.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { CreateDatabaseConnectionDto } from './dto/create-database-connection.dto';
-import {  UpdateDatabaseConnectionDto } from './dto/update-database-connection.dto';
-import { Role } from '../auth/enums/roles.enum';
+import { DatabaseConnectionService } from '../../application/services/database-connection.service';
+import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../auth/infrastructure/guards/roles.guard';
+import { Roles } from '../../../auth/infrastructure/decorators/roles.decorator';
+import { CreateDatabaseConnectionDto } from '../dto/create-database-connection.dto';
+import {  UpdateDatabaseConnectionDto } from '../dto/update-database-connection.dto';
+import { Role } from '../../../auth/infrastructure/enums/roles.enum';
 
 @Controller('database-connections')
 @UseGuards(JwtAuthGuard, RolesGuard)
