@@ -1,9 +1,9 @@
 // src/user/infrastructure/repositories/prisma-user.repository.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
-import { UserRepository } from '../../domain/repositories/user.repository';
+import { UserRepository } from '../../domain/repositories/admin.repository';
 import { ConflictException } from '@nestjs/common';
-import { UpdateUserDto } from 'src/user/application/dtos/update-user.dto';
+import { UpdateUserDto } from 'src/admin/application/dtos/update-user.dto';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {

@@ -1,5 +1,5 @@
 import { User } from "@prisma/client"; 
-import { UpdateUserDto } from "src/user/application/dtos/update-user.dto";
+import { UpdateUserDto } from "src/admin/application/dtos/update-user.dto";
 
 export interface UserRepository {
   create(user: Omit<User, 'id'>): Promise<User>;

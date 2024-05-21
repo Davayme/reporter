@@ -2,10 +2,9 @@
 import { Module } from '@nestjs/common';
 
 
-import { UserController } from './infraestructure/controllers/user.controller';
+import { UserController } from './infraestructure/controllers/admin.controller';
 
-import { CreateUserService } from './application/services/create-user.service';
-import { PrismaUserRepository } from './infraestructure/repositories/prisma-user.repository';
+import { PrismaUserRepository } from './infraestructure/repositories/prisma-admin.repository';
 import { UpdateUserService } from './application/services/update-user.service';
 
 @Module({
@@ -16,9 +15,8 @@ import { UpdateUserService } from './application/services/update-user.service';
         provide: 'UserRepository',
         useExisting: PrismaUserRepository,
       },
-      CreateUserService,
       UpdateUserService,
     ],
-    exports: [CreateUserService, UpdateUserService],
+    exports: [UpdateUserService],
   })
-  export class UserModule {}
+  export class AdminModule {}

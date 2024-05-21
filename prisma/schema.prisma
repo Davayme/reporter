@@ -19,6 +19,10 @@ model User {
   password  String
   email     String   @unique
   roleId    Int
+  //statusActive = QUE LA CUENTA ESTA ELIMINADA O SE MANTIENE EN LA BASE DE DATOS
+  statusActive    Boolean
+  //statusVerified = QUE LA CUENTA ESTA ACTIVADA O DESACTIVADA
+  statusVerified  Boolean
   Role      Role     @relation(fields: [roleId], references: [id])
 }
 

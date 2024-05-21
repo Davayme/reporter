@@ -1,7 +1,7 @@
 // src/user/application/services/update-user.service.ts
 import { Inject, Injectable, NotFoundException, ConflictException } from '@nestjs/common';
-import { UserRepository } from '../../domain/repositories/user.repository';
-import { UpdateUserCommand } from '../commands/user.command';
+import { UserRepository } from '../../domain/repositories/admin.repository';
+import { UpdateUserCommand } from '../commands/admin.command';
 
 @Injectable()
 export class UpdateUserService {
