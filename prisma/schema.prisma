@@ -13,6 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//modelos para el entorno
 model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
@@ -21,8 +22,6 @@ model User {
   roleId    Int
   //statusActive = QUE LA CUENTA ESTA ELIMINADA O SE MANTIENE EN LA BASE DE DATOS
   statusActive    Boolean
-  //statusVerified = QUE LA CUENTA ESTA ACTIVADA O DESACTIVADA
-  statusVerified  Boolean
   Role      Role     @relation(fields: [roleId], references: [id])
   @@map("users")
 }
@@ -31,16 +30,64 @@ model Role {
   id       Int        @id @default(autoincrement())
   type     String     @unique
   User     User[]
+  Menu     Menu[]
   @@map("roles")
 }
 
-model DatabaseConnection {
+model Menu {
+  id_menu Int    @id @default(autoincrement())
+  name    String
+  id_role Int
+  Role      Role     @relation(fields: [id_role], references: [id])
+  Permission Permission[]
+  @@map("menus")
+}
+
+model Permission {
+  id_permissions Int    @id @default(autoincrement())
+  function       String
+  id_menu        Int
+  Menu           Menu   @relation(fields: [id_menu], references: [id_menu])
+  @@map("permissions")
+}
+
+//////////////////
+model Server {
   id              Int    @id @default(autoincrement())
   name            String
-  url             String
-  username        String
+  string_url      String
+  user            String
   password        String
-  databaseType    String
-  statusActive    Boolean
-  @@map("database_connections")
+  type_bd         String
+  port            Int
+  Querie          Querie[]
+  @@map("servers")
 }
+
+model Querie {
+  id_querie Int     @id @default(autoincrement())
+  sentence  String
+  id_server Int
+  Server    Server  @relation(fields: [id_server], references: [id])
+  Template  Template[]
+  @@map("queries")
+}
+
+model Template {
+  id_template Int                @id @default(autoincrement())
+  name        String
+  id_querie   Int
+  Querie      Querie             @relation(fields: [id_querie], references: [id_querie])
+  Template_Detail Template_Detail[]
+  @@map("templates")
+}
+
+model Template_Detail {
+  id           Int      @id @default(autoincrement())
+  field        String
+  type_field   String
+  id_template  Int
+  Template     Template @relation(fields: [id_template], references: [id_template])
+  @@map("template_details")
+}
+
