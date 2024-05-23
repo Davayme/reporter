@@ -1,26 +1,20 @@
-
+// src/admin/application/dtos/create-user.dto.ts
 import { IsString, IsEmail, IsInt, MinLength, IsOptional, IsBoolean } from 'class-validator';
 
-export class UpdateUserDto {
+export class CreateUserDto {
   @IsString()
   @MinLength(3)
-  @IsOptional()
-  username?: string;
+  username: string;
 
   @IsString()
   @MinLength(6)
-  @IsOptional()
-  password?: string;
+  password: string;
 
   @IsEmail()
-  @IsOptional()
-  email?: string;
-
-  @IsInt()
-  @IsOptional()
-  roleId?: number;
+  email: string;
 
   @IsBoolean()
   @IsOptional()
   statusActive?: boolean;
+
 }
