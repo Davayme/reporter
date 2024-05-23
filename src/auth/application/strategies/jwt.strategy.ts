@@ -26,6 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new Error('User not found');
     }
-    return { userId: user.id, username: user.username, roleId: user.roleId };
+    return user;
   }
 }

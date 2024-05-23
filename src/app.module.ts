@@ -6,6 +6,7 @@ import { PrismaModule } from './common/prisma/prisma.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
       }),
       inject: [ConfigService],
     }),
+    MenuModule,
     AuthModule,
     AdminModule],
   controllers: [],
