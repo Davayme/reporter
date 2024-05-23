@@ -1,8 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from '../../../common/prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 import { LoginDto } from '../../infrastructure/dtos/login.dto';
 import { RegisterDto } from '../../infrastructure/dtos/register.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +16,10 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { username } });
     if (user.statusActive === false) {
       throw new HttpException('User is inactive', HttpStatus.FORBIDDEN);
-    } else {
-      if (user && user.password === password) {
+    } 
+    if (user) {
+      const isPasswordMatching = await bcrypt.compare(password, user.password);
+      if (isPasswordMatching) {
         const { password, ...result } = user;
         return result;
       }
@@ -42,10 +45,11 @@ export class AuthService {
 
   async register(registerDto: RegisterDto) {
     try {
+      const hashedPassword = await bcrypt.hash(registerDto.password, 10);
       const user = await this.prisma.user.create({
         data: {
           username: registerDto.username,
-          password: registerDto.password,
+          password: hashedPassword,
           email: registerDto.email,
           roleId: registerDto.roleId,
           statusActive: true,
