@@ -47,7 +47,7 @@ export class AuthService {
           password: registerDto.password,
           email: registerDto.email,
           roleId: registerDto.roleId,
-          statusActive: false,
+          statusActive: true,
         },
       });
       return user;
