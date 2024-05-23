@@ -1,17 +1,26 @@
 // src/user/infrastructure/controllers/user.controller.ts
-import { Controller, Post, Body, ValidationPipe, UseFilters, Patch, Param, ParseIntPipe, Get, Delete } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, UseFilters, Patch, Param, ParseIntPipe, Get, Delete, UseGuards } from '@nestjs/common';
 import { UpdateUserService } from 'src/admin/application/services/update-user.service';
 import { DeleteUserCommand, UpdateUserCommand} from '../../application/commands/admin.command';
 import { HttpExceptionFilter } from 'src/common/http-exception.filter';
 import { UpdateUserDto } from 'src/admin/application/dtos/update-user.dto';
 import { UserResponseDto } from 'src/admin/application/dtos/user-response.dto';
+import { CreateUserDto } from 'src/admin/application/dtos/create-user.dto';
 import { GetAllUsersService } from 'src/admin/application/services/get-all-users.service';
 import { DeleteUserService } from 'src/admin/application/services/delete-user.service';
+import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
+import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
+import { Role } from 'src/auth/infrastructure/enums/roles.enum';
+import { CreateUserService } from 'src/admin/application/services/create-user.service';
 
 @Controller('admin')
 @UseFilters(HttpExceptionFilter)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.Admin)
 export class AdminController {
   constructor(
+    private readonly createUserService : CreateUserService,
     private readonly updateUserService: UpdateUserService,
     private readonly getAllUsersService: GetAllUsersService,
     private readonly deleteUserService: DeleteUserService
@@ -20,6 +29,13 @@ export class AdminController {
   @Get('users')
   async getAllUsers(): Promise<UserResponseDto[]> {
     return this.getAllUsersService.execute();
+  }
+
+  @Post('users')
+  async create(
+    @Body(new ValidationPipe()) createUserDto: CreateUserDto
+  ) {
+    return this.createUserService.execute(createUserDto);
   }
 
   @Patch('users/:id')
