@@ -16,4 +16,6 @@ export class UserResponseDto {
 
   @IsBoolean()
   statusActive: boolean;
+
+
 }

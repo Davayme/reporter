@@ -1,35 +1,25 @@
-import { Injectable, ConflictException } from '@nestjs/common';
-import { Inject } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { AdminRepository } from '../../domain/repositories/admin.repository';
+// src/user/application/services/create-user.service.ts
+import { Inject, Injectable } from '@nestjs/common';
+import { AdminRepository } from 'src/admin/domain/repositories/admin.repository';
+import { CreateUserCommand } from '../commands/admin.command';
+import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-
 @Injectable()
 export class CreateUserService {
   constructor(
-    @Inject('AdminRepository') private readonly adminRepository: AdminRepository,
-    private readonly prisma: PrismaService
-  ) {}
+    @Inject('AdminRepository') private readonly adminRepository: AdminRepository
+  ) { }
 
-  async execute(createUserDto: CreateUserDto) {
-    const existingUser = await this.adminRepository.findByUsername(createUserDto.username);
-    if (existingUser) {
-      throw new ConflictException('Username is already taken');
-    }
-
-    const existingEmail = await this.adminRepository.findByEmail(createUserDto.email);
-    if (existingEmail) {
-      throw new ConflictException('Email is already registered');
-    }
-
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    return this.prisma.user.create({
-      data: {
-        ...createUserDto,
-        password: hashedPassword,
-        statusActive: true,
-      },
+  async execute(command: CreateUserCommand): Promise<User> {
+    const { username, password, email } = command.userDto;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await this.adminRepository.create({
+      username,
+      password: hashedPassword,
+      email,
+      roleId: 2,
+      statusActive: true
     });
+    return newUser;
   }
 }

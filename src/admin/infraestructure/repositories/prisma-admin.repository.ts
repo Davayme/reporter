@@ -7,9 +7,29 @@ import { UpdateUserDto } from 'src/admin/application/dtos/update-user.dto';
 @Injectable()
 export class PrismaAdminRepository implements AdminRepository {
   private prisma = new PrismaClient();
+  async create(user: Omit<User, 'id'>): Promise<User> {
+    try {
+      const newUser = await this.prisma.user.create({
+        data: user,
+      });
+      return newUser;
+    } catch (error) {
+      if (error.code === 'P2002') {
+   
+        const target = error.meta.target as string[];
+        if (target.includes('username')) {
+          throw new ConflictException('Username is already taken');
+        }
+        if (target.includes('email')) {
+          throw new ConflictException('Email is already registered');
+        }
+      }
+      throw error;
+    }
+  }
 
   async findAll(): Promise<User[]> {
-    return this.prisma.user.findMany({});
+    return this.prisma.user.findMany({where: {statusActive: true}});
   }
 
   async findById(id: number): Promise<User | null> {

@@ -1,3 +1,4 @@
+// src/admin/application/dtos/create-user.dto.ts
 import { IsString, IsEmail, IsInt, MinLength, IsOptional, IsBoolean } from 'class-validator';
 
 export class CreateUserDto {
@@ -12,10 +13,8 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @IsInt()
-  roleId: number;
-
   @IsBoolean()
   @IsOptional()
   statusActive?: boolean;
+
 }

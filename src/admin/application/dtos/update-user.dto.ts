@@ -23,8 +23,4 @@ export class UpdateUserDto {
   @IsBoolean()
   @IsOptional()
   statusActive?: boolean;
-
-  @IsBoolean()
-  @IsOptional()
-  statusVerified?: boolean;
 }

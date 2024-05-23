@@ -17,8 +17,8 @@ export class GetAllUsersService {
       username: user.username,
       email: user.email,
       role: user.roleId,
-      statusActive: user.statusActive
+      statusActive: user.statusActive,
+
     }));
   }
 }
-
