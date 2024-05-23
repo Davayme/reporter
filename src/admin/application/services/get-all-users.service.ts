@@ -18,8 +18,7 @@ export class GetAllUsersService {
       email: user.email,
       role: user.roleId,
       statusActive: user.statusActive,
-      statusVerified: user.statusVerified,
+
     }));
   }
 }
-
