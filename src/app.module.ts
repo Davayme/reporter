@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
+import { ServerModule } from './server/server.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { MenuModule } from './menu/menu.module';
     }),
     MenuModule,
     AuthModule,
-    AdminModule],
+    AdminModule,
+    ServerModule],
   controllers: [],
   providers: [],
 })
