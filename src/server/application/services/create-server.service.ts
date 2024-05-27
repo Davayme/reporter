@@ -13,6 +13,6 @@ export class CreateServerService {
 
   async execute(command: CreateServerCommand): Promise<Server> {
     const { name, string_url, user, password, type_bd, port } = command.serverDto;
-    return this.serverRepository.create({ name, string_url, user, password, type_bd, port });
+    return this.serverRepository.create({ name, string_url, user, password, type_bd, port, statusActive: true});
   }
 }

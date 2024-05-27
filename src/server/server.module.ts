@@ -4,6 +4,8 @@ import { ServerController } from './infraestructure/controllers/server.controlle
 import { PrismaServerRepository } from './infraestructure/repositories/prisma-server.repository';
 import { CreateServerService } from './application/services/create-server.service';
 import { GetAllServersService } from './application/services/get-all-servers.service';
+import { UpdateServerService } from './application/services/update-server.service';
+import { DeleteServerService } from './application/services/delete-server.service';
 
 @Module({
   controllers: [ServerController],
@@ -15,8 +17,11 @@ import { GetAllServersService } from './application/services/get-all-servers.ser
     },
     CreateServerService,
     GetAllServersService,
+    UpdateServerService,
+    DeleteServerService,
+
   ],
-  exports: [CreateServerService, GetAllServersService],
+  exports: [CreateServerService, GetAllServersService, UpdateServerService, DeleteServerService],
 })
 export class ServerModule {}
 

@@ -61,6 +61,7 @@ model Server {
   type_bd         String
   port            Int
   Querie          Querie[]
+  statusActive    Boolean @default(true)
   @@map("servers")
 }
 
