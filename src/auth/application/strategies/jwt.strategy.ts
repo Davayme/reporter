@@ -1,3 +1,4 @@
+// src/auth/infrastructure/strategies/jwt.strategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -19,13 +20,24 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     const user = await this.prisma.user.findUnique({
-      where: {
-        id: payload.sub,
+      where: { id_user: payload.sub },
+      include: {
+        usuarios_roles: {
+          include: {
+            rol: true,
+          },
+        },
       },
     });
+
     if (!user) {
       throw new Error('User not found');
     }
-    return user;
+
+    return {
+      id_user: user.id_user,
+      username: user.username,
+      roles: user.usuarios_roles.map(ur => ur.rol.rol),
+    };
   }
 }

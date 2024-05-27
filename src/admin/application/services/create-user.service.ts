@@ -1,25 +1,35 @@
-// src/user/application/services/create-user.service.ts
-import { Inject, Injectable } from '@nestjs/common';
-import { AdminRepository } from 'src/admin/domain/repositories/admin.repository';
-import { CreateUserCommand } from '../commands/admin.command';
-import { User } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
+// src/admin/application/services/create-user.service.ts
+import { Injectable, ConflictException } from '@nestjs/common';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { CreateUserDto } from '../../application/dtos/create-user.dto';
+
 @Injectable()
 export class CreateUserService {
-  constructor(
-    @Inject('AdminRepository') private readonly adminRepository: AdminRepository
-  ) { }
+  constructor(private readonly prisma: PrismaService) {}
 
-  async execute(command: CreateUserCommand): Promise<User> {
-    const { username, password, email } = command.userDto;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await this.adminRepository.create({
-      username,
-      password: hashedPassword,
-      email,
-      roleId: 2,
-      statusActive: true
-    });
-    return newUser;
+  async execute(createUserDto: CreateUserDto) {
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          username: createUserDto.username,
+          password: createUserDto.password,
+          email: createUserDto.email,
+          statusActive: true,
+          usuarios_roles: {
+            create: {
+              rol: {
+                connect: { id_rol: createUserDto.roleId },
+              },
+            },
+          },
+        },
+      });
+      return user;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('Username or email already taken');
+      }
+      throw error;
+    }
   }
 }

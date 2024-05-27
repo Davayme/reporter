@@ -13,6 +13,9 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
+  @IsInt()
+  roleId: number;
+
   @IsBoolean()
   @IsOptional()
   statusActive?: boolean;
