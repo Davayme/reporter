@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
 import { ServerModule } from './server/server.module';
+import { QueriesModule } from './queries/queries.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { ServerModule } from './server/server.module';
     MenuModule,
     AuthModule,
     AdminModule,
-    ServerModule],
+    ServerModule,
+    QueriesModule],
   controllers: [],
   providers: [],
 })
