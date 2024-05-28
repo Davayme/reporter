@@ -5,36 +5,46 @@ import { PrismaService } from '../../../prisma/prisma.service';
 export class GetPermissionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getPermissionsByUserId(userId: number) {
+  async getMenusAndPermissionsByRoles(userId :number): Promise<any> {
+
+    //Obejtener los roles del usuario
     const userRoles = await this.prisma.userRoles.findMany({
       where: { id_user: userId },
+      include: { rol: true },
+    });
+
+    const roleIds = userRoles.map(userRole => userRole.id_rol);
+
+    if (roleIds.length === 0) {
+      return {menus: [], permissions: []};
+    }
+
+
+    // Obtener los menús accesibles por roles
+    const menus = await this.prisma.menusRoles.findMany({
+      where: {
+        id_rol: { in: roleIds },
+      },
       include: {
-        rol: {
-          include: {
-            menus_roles: {
-              include: {
-                menu: {
-                  include: {
-                    permisos_menus: {
-                      include: {
-                        permiso: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
+        menu: true,
       },
     });
 
-    const permissions = userRoles.flatMap(userRole =>
-      userRole.rol.menus_roles.flatMap(menuRole =>
-        menuRole.menu.permisos_menus.map(permissionMenu => permissionMenu.permiso)
-      )
-    );
+    const menuIds = menus.map(menuRole => menuRole.id_menu);
 
-    return permissions;
+    // Obtener los permisos de los menús
+    const permissions = await this.prisma.permisosMenus.findMany({
+      where: {
+        id_menu: { in: menuIds },
+      },
+      include: {
+        permiso: true,
+      },
+    });
+
+    return {
+      menus: menus.map(menuRole => menuRole.menu),
+      permissions: permissions.map(permissionMenu => permissionMenu.permiso),
+    };
   }
 }

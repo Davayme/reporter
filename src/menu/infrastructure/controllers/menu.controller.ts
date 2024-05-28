@@ -11,9 +11,10 @@ export class MenuController {
   constructor(private readonly getPermissionsService: GetPermissionsService) {}
 
   @Get()
-  async getMenu(@Req() request: Request & { user: { id_user: number; username: string; password: string; email: string; statusActive: boolean; } }) {
+  async getMenu(@Req() request: Request & { user: { id_user: number; username: string; password: string; email: string; statusActive: boolean; roles: { rol: string }[] } }) {
     const user = request.user;
-    const permissions = await this.getPermissionsService.getPermissionsByUserId(user.id_user);
-    return permissions;
+    const userId = user.id_user;
+    const menusAndPermissions = await this.getPermissionsService.getMenusAndPermissionsByRoles(userId);
+    return menusAndPermissions;
   }
 }

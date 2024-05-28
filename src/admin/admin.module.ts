@@ -6,6 +6,8 @@ import { UpdateUserService } from './application/services/update-user.service';
 import { GetAllUsersService } from './application/services/get-all-users.service';
 import { DeleteUserService } from './application/services/delete-user.service';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { AssignRoleService } from './application/services/assign-role.service';
+import { RemoveRoleService } from './application/services/remove-role.service';
 
 @Module({
   imports : [PrismaModule],
@@ -16,6 +18,8 @@ import { PrismaModule } from 'src/prisma/prisma.module';
       provide: 'AdminRepository',
       useExisting: PrismaAdminRepository,
     },
+    RemoveRoleService,
+    AssignRoleService,
     CreateUserService,
     UpdateUserService,
     GetAllUsersService,

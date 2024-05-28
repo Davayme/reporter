@@ -11,6 +11,10 @@ import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
 import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
 import { CreateUserDto } from 'src/admin/application/dtos/create-user.dto';
 import { CreateUserService } from 'src/admin/application/services/create-user.service';
+import { AssignRoleService } from 'src/admin/application/services/assign-role.service';
+import { AssignRoleDto } from 'src/admin/application/dtos/assign-role.dto';
+import { RemoveRoleService } from 'src/admin/application/services/remove-role.service';
+import { RemoveRoleDto } from 'src/admin/application/dtos/remove-role.dto';
 
 @Controller('admin')
 @UseFilters(HttpExceptionFilter)
@@ -21,7 +25,9 @@ export class AdminController {
     private readonly createUserService: CreateUserService,
     private readonly updateUserService: UpdateUserService,
     private readonly getAllUsersService: GetAllUsersService,
-    private readonly deleteUserService: DeleteUserService
+    private readonly deleteUserService: DeleteUserService,
+    private readonly assignRoleService: AssignRoleService,
+    private readonly removeRoleService: RemoveRoleService,
   ) {}
 
   @Get('users')
@@ -31,8 +37,7 @@ export class AdminController {
 
   @Post('users')
   async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
-    const newUser = await this.createUserService.execute(createUserDto);
-    return newUser;
+    return this.createUserService.execute(createUserDto);
   }
 
   @Patch('users/:id')
@@ -48,5 +53,15 @@ export class AdminController {
   async delete(@Param('id', ParseIntPipe) id: number) {
     const command = new DeleteUserCommand(id);
     await this.deleteUserService.execute(command);
+  }
+
+  @Post('users/assign-roles')
+  async assignRoles(@Body(new ValidationPipe()) assignRoleDto: AssignRoleDto) {
+    return this.assignRoleService.assignRoles(assignRoleDto);
+  }
+
+  @Post('users/remove-roles')
+  async removeRoles(@Body(new ValidationPipe()) removeRoleDto: RemoveRoleDto) {
+    return this.removeRoleService.removeRoles(removeRoleDto);
   }
 }
