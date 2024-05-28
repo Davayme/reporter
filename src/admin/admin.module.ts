@@ -8,6 +8,8 @@ import { DeleteUserService } from './application/services/delete-user.service';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { AssignRoleService } from './application/services/assign-role.service';
 import { RemoveRoleService } from './application/services/remove-role.service';
+import { AssignPermissionService } from './application/services/assign-permission.service';
+import { RemovePermissionService } from './application/services/remove-permission.service';
 
 @Module({
   imports : [PrismaModule],
@@ -18,13 +20,24 @@ import { RemoveRoleService } from './application/services/remove-role.service';
       provide: 'AdminRepository',
       useExisting: PrismaAdminRepository,
     },
-    RemoveRoleService,
-    AssignRoleService,
     CreateUserService,
     UpdateUserService,
     GetAllUsersService,
-    DeleteUserService
+    DeleteUserService,
+    AssignPermissionService,
+    RemovePermissionService,
+    AssignRoleService,
+    RemoveRoleService,
   ],
-  exports: [CreateUserService, UpdateUserService, GetAllUsersService],
+  exports: [
+    CreateUserService,
+    UpdateUserService,
+    GetAllUsersService,
+    DeleteUserService,
+    AssignPermissionService,
+    RemovePermissionService,
+    AssignRoleService,
+    RemoveRoleService,
+  ],
 })
 export class AdminModule {}

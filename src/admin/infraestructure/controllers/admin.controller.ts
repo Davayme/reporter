@@ -15,6 +15,10 @@ import { AssignRoleService } from 'src/admin/application/services/assign-role.se
 import { AssignRoleDto } from 'src/admin/application/dtos/assign-role.dto';
 import { RemoveRoleService } from 'src/admin/application/services/remove-role.service';
 import { RemoveRoleDto } from 'src/admin/application/dtos/remove-role.dto';
+import { RemovePermissionService } from 'src/admin/application/services/remove-permission.service';
+import { AssignPermissionService } from 'src/admin/application/services/assign-permission.service';
+import { AssignPermissionDto } from 'src/admin/application/dtos/assign-permission.dto';
+import { RemovePermissionDto } from 'src/admin/application/dtos/remove-permission.dto';
 
 @Controller('admin')
 @UseFilters(HttpExceptionFilter)
@@ -28,6 +32,8 @@ export class AdminController {
     private readonly deleteUserService: DeleteUserService,
     private readonly assignRoleService: AssignRoleService,
     private readonly removeRoleService: RemoveRoleService,
+    private readonly assignPermissionService: AssignPermissionService,
+    private readonly removePermissionService: RemovePermissionService
   ) {}
 
   @Get('users')
@@ -63,5 +69,16 @@ export class AdminController {
   @Post('users/remove-roles')
   async removeRoles(@Body(new ValidationPipe()) removeRoleDto: RemoveRoleDto) {
     return this.removeRoleService.removeRoles(removeRoleDto);
+  }
+
+  //ASIGNAR PERMISOS
+  @Post('assign-permission')
+  async assignPermission(@Body(new ValidationPipe()) assignPermissionDto: AssignPermissionDto) {
+    return this.assignPermissionService.assignPermission(assignPermissionDto);
+  }
+
+  @Delete('remove-permission')
+  async removePermission(@Body(new ValidationPipe()) removePermissionDto: RemovePermissionDto) {
+    return this.removePermissionService.removePermission(removePermissionDto);
   }
 }
