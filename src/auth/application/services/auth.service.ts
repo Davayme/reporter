@@ -4,12 +4,14 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { LoginDto } from '../../infrastructure/dtos/login.dto';
 import { RegisterDto } from '../../infrastructure/dtos/register.dto';
 import * as bcrypt from 'bcrypt';
+import { GetPermissionsService } from 'src/menu/application/services/get-permissions.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly getPermissionsService: GetPermissionsService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -43,8 +45,11 @@ export class AuthService {
       sub: user.id_user,
       role: user.usuarios_roles[0]?.rol.rol, // asume que un usuario tiene un rol principal
     };
+    const menusWithPermissions = await this.getPermissionsService.getMenusAndPermissionsByUserId(user.id_user);
+    
     return {
       access_token: this.jwtService.sign(payload),
+      menus: menusWithPermissions,
     };
   }
 

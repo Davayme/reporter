@@ -5,6 +5,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 export class GetPermissionsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /*
   async getMenusAndPermissionsByRoles(userId :number): Promise<any> {
 
     //Obejtener los roles del usuario
@@ -46,5 +47,43 @@ export class GetPermissionsService {
       menus: menus.map(menuRole => menuRole.menu),
       permissions: permissions.map(permissionMenu => permissionMenu.permiso),
     };
+  }
+  */
+  async getMenusAndPermissionsByUserId(userId: number): Promise<any> {
+    // Obtener los roles del usuario
+    const userRoles = await this.prisma.userRoles.findMany({
+      where: { id_user: userId },
+      include: {
+        rol: {
+          include: {
+            menus_roles: {
+              include: {
+                menu: {
+                  include: {
+                    permisos_menus: {
+                      include: {
+                        permiso: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // Extraer los menús y permisos
+    const menusWithPermissions = userRoles.flatMap(userRole => {
+      return userRole.rol.menus_roles.map(menuRole => {
+        return {
+          menu: menuRole.menu.nombre,
+          permissions: menuRole.menu.permisos_menus.map(permisoMenu => permisoMenu.permiso.permiso),
+        };
+      });
+    });
+
+    return menusWithPermissions;
   }
 }
