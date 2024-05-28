@@ -19,6 +19,10 @@ import { RemovePermissionService } from 'src/admin/application/services/remove-p
 import { AssignPermissionService } from 'src/admin/application/services/assign-permission.service';
 import { AssignPermissionDto } from 'src/admin/application/dtos/assign-permission.dto';
 import { RemovePermissionDto } from 'src/admin/application/dtos/remove-permission.dto';
+import { AssignMenuDto } from 'src/admin/application/dtos/assign-menu.dto';
+import { RemoveMenuDto } from 'src/admin/application/dtos/remove-menu.dto';
+import { AssignMenuService } from 'src/admin/application/services/assign-menu.service';
+import { RemoveMenuService } from 'src/admin/application/services/remove-menu.service';
 
 @Controller('admin')
 @UseFilters(HttpExceptionFilter)
@@ -33,7 +37,9 @@ export class AdminController {
     private readonly assignRoleService: AssignRoleService,
     private readonly removeRoleService: RemoveRoleService,
     private readonly assignPermissionService: AssignPermissionService,
-    private readonly removePermissionService: RemovePermissionService
+    private readonly removePermissionService: RemovePermissionService,
+    private readonly assignMenuService: AssignMenuService,
+    private readonly removeMenuService: RemoveMenuService,
   ) {}
 
   @Get('users')
@@ -81,4 +87,15 @@ export class AdminController {
   async removePermission(@Body(new ValidationPipe()) removePermissionDto: RemovePermissionDto) {
     return this.removePermissionService.removePermission(removePermissionDto);
   }
+
+  @Post('assign-menu')
+  async assignMenu(@Body(new ValidationPipe()) assignMenuDto: AssignMenuDto) {
+    return this.assignMenuService.assignMenu(assignMenuDto);
+  }
+
+  @Delete('remove-menu')
+  async removeMenu(@Body(new ValidationPipe()) removeMenuDto: RemoveMenuDto) {
+    return this.removeMenuService.removeMenu(removeMenuDto);
+  }
+
 }

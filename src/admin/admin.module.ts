@@ -10,6 +10,8 @@ import { AssignRoleService } from './application/services/assign-role.service';
 import { RemoveRoleService } from './application/services/remove-role.service';
 import { AssignPermissionService } from './application/services/assign-permission.service';
 import { RemovePermissionService } from './application/services/remove-permission.service';
+import { AssignMenuService } from './application/services/assign-menu.service';
+import { RemoveMenuService } from './application/services/remove-menu.service';
 
 @Module({
   imports : [PrismaModule],
@@ -28,16 +30,13 @@ import { RemovePermissionService } from './application/services/remove-permissio
     RemovePermissionService,
     AssignRoleService,
     RemoveRoleService,
+    AssignMenuService,
+    RemoveMenuService,
   ],
   exports: [
     CreateUserService,
     UpdateUserService,
-    GetAllUsersService,
-    DeleteUserService,
-    AssignPermissionService,
-    RemovePermissionService,
-    AssignRoleService,
-    RemoveRoleService,
+    GetAllUsersService
   ],
 })
 export class AdminModule {}
