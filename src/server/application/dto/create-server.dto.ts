@@ -1,13 +1,16 @@
-import { IsString, IsInt, IsNotEmpty } from 'class-validator';
+import { IsString, IsInt, IsNotEmpty, IsOptional, IsBoolean, IsEnum } from 'class-validator';
+
+enum DbType {
+  mysql = 'mysql',
+  pg = 'pg',
+  oracle = 'oracle',
+  sqlserver = 'sqlserver'
+}
 
 export class CreateServerDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  @IsString()
-  @IsNotEmpty()
-  string_url: string;
 
   @IsString()
   @IsNotEmpty()
@@ -18,10 +21,20 @@ export class CreateServerDto {
 
   @IsString()
   @IsNotEmpty()
-  type_bd: string;
+  database: string;
+
+  @IsEnum(DbType)
+  type_bd: DbType;
 
   @IsInt()
   @IsNotEmpty()
   port: number;
-}
 
+  @IsBoolean()
+  @IsOptional()
+  ssl: boolean;
+
+  @IsString()
+  @IsOptional()
+  description: string;
+}

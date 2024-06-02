@@ -59,16 +59,26 @@ model Permission {
 model Server {
   id           Int      @id @default(autoincrement())
   name         String
-  string_url   String
   user         String
   password     String
-  type_bd      String
+  database     String   // Nombre de la base de datos
+  type_bd      DbType   // Enum para el tipo de base de datos
   port         Int
-  Querie       Query[]
+  ssl          Boolean  @default(false) // Campo para SSL
   statusActive Boolean  @default(true)
+  description  String?  // Campo opcional de descripción
+  Querie       Query[]
 
   @@map("servers")
 }
+
+enum DbType {
+  mysql
+  pg
+  oracle
+  sqlserver
+}
+
 
 model Query {
   id_querie    Int        @id @default(autoincrement())

@@ -1,14 +1,16 @@
-// src/server/application/dtos/update-server.dto.ts
-import { IsString, IsInt, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsInt, IsOptional, IsBoolean, IsEnum } from 'class-validator';
+
+enum DbType {
+  mysql = 'mysql',
+  pg = 'pg',
+  oracle = 'oracle',
+  sqlserver = 'sqlserver'
+}
 
 export class UpdateServerDto {
   @IsString()
   @IsOptional()
   name?: string;
-
-  @IsString()
-  @IsOptional()
-  string_url?: string;
 
   @IsString()
   @IsOptional()
@@ -20,7 +22,11 @@ export class UpdateServerDto {
 
   @IsString()
   @IsOptional()
-  type_bd?: string;
+  database?: string;
+
+  @IsEnum(DbType)
+  @IsOptional()
+  type_bd?: DbType;
 
   @IsInt()
   @IsOptional()
@@ -28,5 +34,9 @@ export class UpdateServerDto {
 
   @IsBoolean()
   @IsOptional()
-  statusActive?: boolean;
+  ssl?: boolean;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
 }
