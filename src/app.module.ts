@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
 import { ServerModule } from './server/server.module';
 import { QueriesModule } from './queries/queries.module';
+import { ExecuteQueriesModule } from './execute-queries/execute-queries.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { QueriesModule } from './queries/queries.module';
     AuthModule,
     AdminModule,
     ServerModule,
-    QueriesModule],
+    QueriesModule,
+    ExecuteQueriesModule],
   controllers: [],
   providers: [],
 })
