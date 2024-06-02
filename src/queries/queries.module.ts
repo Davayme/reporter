@@ -15,6 +15,9 @@ import { QueryController } from './infraestructure/controllers/querycontrollers'
 import { GetQueriesByServerIdService } from './application/services/get-queries-by-server.service';
 import { PrismaQueryRepository } from './infraestructure/repositories/prisma-query.repository';
 import { CreateQueryService } from './application/services/create-query.service';
+import { UpdateQueryService } from './application/services/update-query.service';
+import { DeleteQueryService } from './application/services/delete-query.service';
+import { GetQueries } from './application/services/getAll-query.service';
 @Module({
   controllers: [QueryController],
   providers: [
@@ -22,9 +25,12 @@ import { CreateQueryService } from './application/services/create-query.service'
       provide: 'QueryRepository',
       useClass: PrismaQueryRepository,
     },
+    GetQueries,
     GetQueriesByServerIdService,
     CreateQueryService,
+    UpdateQueryService,
+    DeleteQueryService
   ],
-  exports: [GetQueriesByServerIdService, CreateQueryService],
+  exports: [GetQueries,GetQueriesByServerIdService, CreateQueryService, UpdateQueryService, DeleteQueryService],
 })
 export class QueriesModule {}

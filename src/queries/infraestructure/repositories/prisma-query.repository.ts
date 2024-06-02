@@ -4,7 +4,15 @@ import { QueryRepository } from 'src/queries/domain/repositories/query.repositor
 
 @Injectable()
 export class PrismaQueryRepository implements QueryRepository {
+
+
   private prisma = new PrismaClient();
+
+  async findAll(): Promise<Query[]> {
+    return this.prisma.query.findMany(
+      { where: { statusActive: true } }
+    );
+  }
 
   async findAllByServerId(serverId: number): Promise<Query[]> {
     return this.prisma.query.findMany({
@@ -38,7 +46,7 @@ export class PrismaQueryRepository implements QueryRepository {
       data: query
     });
   }
-  
+
   async delete(id: number): Promise<Query> {
     const existingQuery = await this.prisma.query.findUnique({ where: { id_querie: id } });
 
