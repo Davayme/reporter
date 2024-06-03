@@ -17,6 +17,10 @@ export class CreateServerDto {
   user: string;
 
   @IsString()
+  @IsNotEmpty()
+  string_url: string;
+
+  @IsString()
   password: string;
 
   @IsString()

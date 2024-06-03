@@ -10,6 +10,7 @@ import { MenuModule } from './menu/menu.module';
 import { ServerModule } from './server/server.module';
 import { QueriesModule } from './queries/queries.module';
 import { ExecuteQueriesModule } from './execute-queries/execute-queries.module';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { ExecuteQueriesModule } from './execute-queries/execute-queries.module';
     AdminModule,
     ServerModule,
     QueriesModule,
-    ExecuteQueriesModule],
+    ExecuteQueriesModule,
+    TestModule],
   controllers: [],
   providers: [],
 })

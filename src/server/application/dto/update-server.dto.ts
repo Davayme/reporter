@@ -18,6 +18,10 @@ export class UpdateServerDto {
 
   @IsString()
   @IsOptional()
+  string_url?: string;
+
+  @IsString()
+  @IsOptional()
   password?: string;
 
   @IsString()

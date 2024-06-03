@@ -59,6 +59,7 @@ model Permission {
 model Server {
   id           Int      @id @default(autoincrement())
   name         String
+  string_url   String
   user         String
   password     String
   database     String   // Nombre de la base de datos
