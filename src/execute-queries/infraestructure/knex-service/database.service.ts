@@ -1,57 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { Knex } from 'knex';
-import knex from 'knex';
 import { Server } from '@prisma/client';
+import { DatabaseInterface } from './IDatabase';
+import { MysqlDatabase } from './MysqlDatabase';
+import { PgDatabase } from './PgDatabase';
+import { OracleDatabase } from './OracleDatabase';
+import { SqlServerDatabase } from './SqlServerDatabase';
 
 @Injectable()
 export class DatabaseService {
-  private db: Knex;
+  private db: DatabaseInterface;
 
-  private getConfig(server: Server): any {
-    const connectionConfig = {
-      host: server.string_url,
-      user: server.user,
-      password: server.password,
-      database: server.database,
-      port: server.port,
-      ssl: server.ssl ? { rejectUnauthorized: false } : undefined,
-    };
-
+  async connect(server: Server): Promise<void> {
     switch (server.type_bd) {
       case 'mysql':
-        return {
-          client: 'mysql',
-          connection: connectionConfig,
-        };
+        this.db = new MysqlDatabase();
+        break;
       case 'pg':
-        return {
-          client: 'pg',
-          connection: connectionConfig,
-        };
-      case 'oracle':
-        return {
-          client: 'oracledb',
-          connection: connectionConfig,
-        };
+        this.db = new PgDatabase();
+        break;
       case 'sqlserver':
-        return {
-          client: 'mssql',
-          connection: connectionConfig,
-        };
+        this.db = new SqlServerDatabase();
+        break;
+      case 'oracle':
+        this.db = new OracleDatabase();
       default:
         throw new Error('Unsupported database type');
     }
-  }
 
-  async connect(server: Server): Promise<void> {
-    const config = this.getConfig(server);
-    this.db = knex(config);
-
-    try {
-      await this.db.raw('SELECT 1');
-    } catch (err) {
-      throw new Error(`Error connecting to database: ${err.message}`);
-    }
+    await this.db.connect(server);
   }
 
   async executeQuery(query: string): Promise<any> {
@@ -59,11 +35,6 @@ export class DatabaseService {
       throw new Error('Database connection not established');
     }
 
-    try {
-      const result = await this.db.raw(query);
-      return result.rows ? result.rows : result[0];
-    } catch (err) {
-      throw new Error(`Error executing query: ${err.message}`);
-    }
+    return this.db.executeQuery(query);
   }
 }

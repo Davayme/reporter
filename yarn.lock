@@ -5332,6 +5332,11 @@ ora@^5.4.1, ora@5.4.1:
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
 
+oracledb@^6.5.1:
+  version "6.5.1"
+  resolved "https://registry.npmjs.org/oracledb/-/oracledb-6.5.1.tgz"
+  integrity sha512-JzoSGei1wnvmqgKnAZK1W650mzHTZXx+7hClV4mwsbY/ZjUtrpnojNJMYJ2jkOhj7XG5oJPfXc4GqDKaNzkxqg==
+
 os-tmpdir@~1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/os-tmpdir/-/os-tmpdir-1.0.2.tgz"

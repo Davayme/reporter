@@ -13,8 +13,8 @@ export class ExecuteQueryService {
   async execute(executeQueryDto: ExecuteQueryDto): Promise<any> {
     const { query, serverId } = executeQueryDto;
     const server = await this.serverRepository.findById(serverId);
-
     await this.databaseService.connect(server);
     return this.databaseService.executeQuery(query);
   }
+
 }

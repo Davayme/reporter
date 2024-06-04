@@ -6,24 +6,6 @@ import knex from 'knex';
 @Injectable()
 export class DatabaseService {
   private db: Knex;
-  private config = {
-    client: 'mysql',
-    connection: {
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      database: 'quinto'
-    }
-  };
-  private config2 = {
-    client: 'pg',
-    connection: {
-      host: 'localhost',
-      user: 'postgres',
-      password: 'admin',
-      database: 'reporter'
-    }
-  };
   private config3 = {
     client: 'mssql',
     connection: {
