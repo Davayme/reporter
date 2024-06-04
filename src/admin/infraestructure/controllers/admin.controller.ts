@@ -21,7 +21,7 @@ import { AssignPermissionDto } from 'src/admin/application/dtos/assign-permissio
 import { RemovePermissionDto } from 'src/admin/application/dtos/remove-permission.dto';
 import { AssignMenuDto } from 'src/admin/application/dtos/assign-menu.dto';
 import { RemoveMenuDto } from 'src/admin/application/dtos/remove-menu.dto';
-import { AssignMenuService } from 'src/admin/application/services/assign-menu.service';
+import { AssignMenuService } from 'src/admin/application/services/menu/assign-menu.service';
 import { RemoveMenuService } from 'src/admin/application/services/remove-menu.service';
 
 @Controller('admin')

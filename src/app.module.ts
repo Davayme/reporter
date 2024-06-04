@@ -7,6 +7,10 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
+import { ServerModule } from './server/server.module';
+import { QueriesModule } from './queries/queries.module';
+import { ExecuteQueriesModule } from './execute-queries/execute-queries.module';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -26,7 +30,11 @@ import { MenuModule } from './menu/menu.module';
     }),
     MenuModule,
     AuthModule,
-    AdminModule],
+    AdminModule,
+    ServerModule,
+    QueriesModule,
+    ExecuteQueriesModule,
+    TestModule],
   controllers: [],
   providers: [],
 })

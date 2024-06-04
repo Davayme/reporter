@@ -1,4 +1,46 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateServerDto } from './create-server.dto';
+import { IsString, IsInt, IsOptional, IsBoolean, IsEnum } from 'class-validator';
 
-export class UpdateServerDto extends PartialType(CreateServerDto) {}
+enum DbType {
+  mysql = 'mysql',
+  pg = 'pg',
+  oracle = 'oracle',
+  sqlserver = 'sqlserver'
+}
+
+export class UpdateServerDto {
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @IsString()
+  @IsOptional()
+  user?: string;
+
+  @IsString()
+  @IsOptional()
+  string_url?: string;
+
+  @IsString()
+  @IsOptional()
+  password?: string;
+
+  @IsString()
+  @IsOptional()
+  database?: string;
+
+  @IsEnum(DbType)
+  @IsOptional()
+  type_bd?: DbType;
+
+  @IsInt()
+  @IsOptional()
+  port?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  ssl?: boolean;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+}

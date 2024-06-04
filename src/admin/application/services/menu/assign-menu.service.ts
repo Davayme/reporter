@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { AssignMenuDto } from '../dtos/assign-menu.dto';
+import { PrismaService } from '../../../../prisma/prisma.service';
+import { AssignMenuDto } from '../../dtos/assign-menu.dto';
 
 @Injectable()
 export class AssignMenuService {

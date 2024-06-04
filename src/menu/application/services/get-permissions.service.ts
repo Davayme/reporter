@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
+import { PermissionCheckDto } from '../dtos/permission-check';
 
 @Injectable()
 export class GetPermissionsService {
+  checkPermission(permissionCheckDto: PermissionCheckDto) {
+      throw new Error("Method not implemented.");
+  }
   constructor(private readonly prisma: PrismaService) {}
 
   /*
