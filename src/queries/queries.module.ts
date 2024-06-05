@@ -18,7 +18,11 @@ import { CreateQueryService } from './application/services/create-query.service'
 import { UpdateQueryService } from './application/services/update-query.service';
 import { DeleteQueryService } from './application/services/delete-query.service';
 import { GetQueries } from './application/services/getAll-query.service';
+import { PrismaModule } from 'src/prisma/prisma.module';
+import { AuthModule } from 'src/auth/auth.module';
+
 @Module({
+  imports: [PrismaModule, AuthModule],
   controllers: [QueryController],
   providers: [
     {
