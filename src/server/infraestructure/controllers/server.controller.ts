@@ -8,8 +8,13 @@ import { GetAllServersService } from 'src/server/application/services/get-all-se
 import { UpdateServerDto } from 'src/server/application/dto/update-server.dto';
 import { UpdateServerService } from 'src/server/application/services/update-server.service';
 import { DeleteServerService } from 'src/server/application/services/delete-server.service';
+import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
+import { PermissionsGuard } from 'src/auth/infrastructure/guards/permissions.guard';
+import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 
 @Controller('servers')
+@UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
 export class ServerController {
   constructor(
     private readonly createServerService: CreateServerService,
@@ -18,22 +23,27 @@ export class ServerController {
     private readonly deleteServerService: DeleteServerService
   ) {}
 
+  @Permissions('read')
   @Get() 
   async findAll(): Promise<Server[]> {
     return this.getAllServersService.execute();
   }
 
+  @Permissions('create')
   @Post()
   async create(@Body(new ValidationPipe()) createServerDto: CreateServerDto): Promise<Server> {
     const command = new CreateServerCommand(createServerDto);
     return this.createServerService.execute(command);
   }
+
+  @Permissions('update')
   @Patch(':id')
   async update(@Param('id') id: number, @Body(new ValidationPipe()) updateServerDto: UpdateServerDto): Promise<Server> {
     const command = new UpdateServerCommand(id, updateServerDto);
     return this.updateServerService.execute(command);
   }
 
+  @Permissions('delete')
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<Server> {
     const command = new DeleteServerCommand(id);

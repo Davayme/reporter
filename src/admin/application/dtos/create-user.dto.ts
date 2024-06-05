@@ -1,5 +1,5 @@
 // src/admin/application/dtos/create-user.dto.ts
-import { IsString, IsEmail, IsInt, MinLength, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsEmail, IsInt, MinLength, IsOptional, IsBoolean, IsArray, ArrayMinSize } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -12,6 +12,12 @@ export class CreateUserDto {
 
   @IsEmail()
   email: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsOptional()
+  @IsInt({ each: true })
+  roleIds?: number[];
 
   @IsBoolean()
   @IsOptional()

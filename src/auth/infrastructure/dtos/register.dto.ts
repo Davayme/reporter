@@ -16,6 +16,4 @@ export class RegisterDto {
   @IsNotEmpty()
   readonly roleId: number;
 
-  @IsNotEmpty()
-  readonly status: string;
 }

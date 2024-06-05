@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { Query } from '@prisma/client';
 import { CreateQueryCommand, DeleteQueryCommand, UpdateQueryCommand } from 'src/queries/application/commands/query.comands';
 import { CreateQueryDto } from 'src/queries/application/dtos/create-query.dto';
@@ -8,8 +8,14 @@ import { UpdateQueryDto } from 'src/queries/application/dtos/update-query.dto';
 import { UpdateQueryService } from 'src/queries/application/services/update-query.service';
 import { DeleteQueryService } from 'src/queries/application/services/delete-query.service';
 import { GetQueries } from 'src/queries/application/services/getAll-query.service';
+import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
+import { PermissionsGuard } from 'src/auth/infrastructure/guards/permissions.guard';
+import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
+import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
 
 @Controller('queries')
+@UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
 export class QueryController {
     constructor(
         private readonly getQueries: GetQueries,
@@ -29,6 +35,8 @@ export class QueryController {
         return this.getQueriesByServerIdService.execute(serverId);
     }
 
+    @Permissions('create')
+    @Roles('user')
     @Post()
     async createQuery(@Body(new ValidationPipe()) createQueryDto: CreateQueryDto): Promise<Query> {
         const command = new CreateQueryCommand(createQueryDto);

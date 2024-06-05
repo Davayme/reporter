@@ -11,8 +11,8 @@ export class UserResponseDto {
   @IsEmail()
   email: string;
 
-  @IsNumber()
-  role: number;
+  @IsString({ each: true})
+  role: string[];
 
   @IsBoolean()
   statusActive: boolean;
