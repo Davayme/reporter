@@ -10,7 +10,7 @@ import { MenuModule } from './menu/menu.module';
 import { ServerModule } from './server/server.module';
 import { QueriesModule } from './queries/queries.module';
 import { ExecuteQueriesModule } from './execute-queries/execute-queries.module';
-import { TestModule } from './test/test.module';
+import { TemplateModule } from './template/template.module';
 
 @Module({
   imports: [
@@ -34,7 +34,7 @@ import { TestModule } from './test/test.module';
     ServerModule,
     QueriesModule,
     ExecuteQueriesModule,
-    TestModule],
+    TemplateModule],
   controllers: [],
   providers: [],
 })

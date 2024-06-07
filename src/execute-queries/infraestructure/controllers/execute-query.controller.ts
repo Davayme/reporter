@@ -8,11 +8,11 @@ import { ExecuteQueryService } from "src/execute-queries/application/services/ex
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 
 @Controller('execute-queries')
-@UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
+//@UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
 export class ExecuteQueryController {
   constructor(private readonly executeQueryService: ExecuteQueryService) {}
 
-  @Permissions('create')
+  //@Permissions('create')
   @Post()
   async executeQuery(@Body(new ValidationPipe()) executeQueryDto: ExecuteQueryDto): Promise<any> {
     try {

@@ -116,22 +116,31 @@ model Query {
 }
 
 model Template {
-  id_template     Int               @id @default(autoincrement())
-  name            String
-  id_querie       Int
-  statusActive    Boolean           @default(true)
-  Querie          Query            @relation(fields: [id_querie], references: [id_querie])
-  Template_Detail Template_Detail[]
+  id_template            Int               @id @default(autoincrement())
+  name          String
+  queryId       Int
+  statusActive  Boolean           @default(true)
+  query         Query             @relation(fields: [queryId], references: [id_querie])
+  templateDetails Template_Detail[]
 
   @@map("templates")
 }
 
 model Template_Detail {
-  id          Int      @id @default(autoincrement())
+  id_detail          Int       @id @default(autoincrement())
   field       String
-  type_field  String
-  id_template Int
-  Template    Template @relation(fields: [id_template], references: [id_template])
+  typeField   FieldType
+  templateId  Int
+  statusActive Boolean   @default(true)
+  template    Template  @relation(fields: [templateId], references: [id_template])
 
   @@map("template_details")
+}
+
+enum FieldType {
+  text
+  number
+  date
+  boolean
+  time
 }
