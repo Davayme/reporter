@@ -7,6 +7,9 @@ class TemplateDetailResponseDto {
 
   @IsString()
   typeField: string;
+
+  @IsString()
+  operation: string;
 }
 
 class QueryResponseDto {

@@ -24,6 +24,7 @@ export class GetAllTemplateService {
         id_detail: detail.id_detail,
         field: detail.field,
         typeField: detail.typeField,
+        operation : detail.operation
       })),
     }));
   }

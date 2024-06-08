@@ -13,6 +13,9 @@ class UpdateTemplateDetailDto {
 
   @IsBoolean()
   statusActive: boolean;
+
+  @IsString()
+  operation: string; // Nuevo campo para la operación
 }
 
 export class UpdateTemplateDto {

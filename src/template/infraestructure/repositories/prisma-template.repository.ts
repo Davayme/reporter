@@ -39,6 +39,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
               field: detail.field,
               typeField: detail.typeField,
               statusActive: detail.statusActive,
+              operation: detail.operation, // Incluir el campo de operación
             })),
           },
         },
@@ -63,7 +64,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
     }
   }
 
-  async update(id_template: number, template: Template, details: Template_Detail[]): Promise<Template> {
+  async update(id_template: number, template: Omit<Template, 'id_template'>, details: Template_Detail[]): Promise<Template> {
     try {
       const updatedTemplate = await this.prisma.template.update({
         where: { id_template },
@@ -78,6 +79,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
                 field: detail.field,
                 typeField: detail.typeField,
                 statusActive: detail.statusActive,
+                operation: detail.operation, // Incluir el campo de operación
               },
             })),
           },
@@ -89,21 +91,17 @@ export class PrismaTemplateRepository implements TemplateRepository {
       return updatedTemplate;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
-        // Manejar errores específicos de Prisma, como intentar actualizar un registro que no existe
         if (error.code === 'P2025') {
           throw new NotFoundException(`Template with ID ${id_template} not found.`);
         }
         throw new BadRequestException(error.message);
       } else if (error instanceof PrismaClientValidationError) {
-        // Manejar errores de validación de Prisma
         throw new BadRequestException('Validation error in Prisma operation.');
       } else {
-        // Manejar cualquier otro tipo de error
         throw new InternalServerErrorException('An unexpected error occurred.');
       }
     }
   }
-
   async delete(id_template: number): Promise<void> {
     try {
       await this.prisma.template.update({

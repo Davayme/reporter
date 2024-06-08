@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { TemplateRepository } from 'src/template/domian/repositories/template.repository';
 import { UpdateTemplateCommand } from '../commands/template.commands';
-import { Template, Template_Detail, FieldType } from '@prisma/client';
+import { Template, Template_Detail, FieldType, OperationType } from '@prisma/client';
 
 @Injectable()
 export class UpdateTemplateService {
@@ -23,6 +23,7 @@ export class UpdateTemplateService {
       field: detail.field,
       typeField: detail.typeField as FieldType,
       statusActive: detail.statusActive,
+      operation: detail.operation as OperationType, // Nuevo campo para la operación
       templateId: id_template,
     }));
 
