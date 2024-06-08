@@ -13,6 +13,7 @@ export class GetAllTemplateService {
     const templates = await this.templateRepository.findAll();
 
     return templates.map(template => ({
+      id_template: template.id_template,
       name: template.name,
       query: {
         query: template.query.sentence,
@@ -20,6 +21,7 @@ export class GetAllTemplateService {
         type_bd: template.query.Server.type_bd,
       },
       templateDetails: template.templateDetails.map(detail => ({
+        id_detail: detail.id_detail,
         field: detail.field,
         typeField: detail.typeField,
       })),

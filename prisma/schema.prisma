@@ -127,12 +127,13 @@ model Template {
 }
 
 model Template_Detail {
-  id_detail          Int       @id @default(autoincrement())
-  field       String
-  typeField   FieldType
-  templateId  Int
-  statusActive Boolean   @default(true)
-  template    Template  @relation(fields: [templateId], references: [id_template])
+  id_detail              Int               @id @default(autoincrement())
+  field                  String
+  typeField              FieldType
+  templateId             Int
+  statusActive           Boolean           @default(true)
+  template               Template          @relation(fields: [templateId], references: [id_template])
+  operation              OperationType?    // Tipo de operación (e.g., sum, avg)
 
   @@map("template_details")
 }
@@ -143,4 +144,10 @@ enum FieldType {
   date
   boolean
   time
+}
+
+enum OperationType {
+  sum
+  avg
+  none
 }
