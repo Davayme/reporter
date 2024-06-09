@@ -11,6 +11,7 @@ import { ServerModule } from './server/server.module';
 import { QueriesModule } from './queries/queries.module';
 import { GenerateTemplateModule } from './generate-templates/execute-queries.module';
 import { TemplateModule } from './template/template.module';
+import { TemplateDetailModule } from './template_detail/template_detail.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { TemplateModule } from './template/template.module';
     QueriesModule,
     GenerateTemplateModule,
     TemplateModule,
+    TemplateDetailModule,
     ],
   controllers: [],
   providers: [],

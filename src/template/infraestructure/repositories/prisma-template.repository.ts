@@ -21,7 +21,9 @@ export class PrismaTemplateRepository implements TemplateRepository {
             Server: true,
           },
         },
-        templateDetails: true,
+        templateDetails: {
+          where: { statusActive: true }, // Se agrega esta línea para filtrar por statusActive: true
+        },
       },
     });
   }

@@ -12,7 +12,7 @@ class CreateTemplateDetailDto {
   statusActive: boolean;
 
   @IsString()
-  operation: string; // Nuevo campo para la operación
+  operation: string;
 }
 
 export class CreateTemplateDto {
