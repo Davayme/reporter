@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
 import { ServerModule } from './server/server.module';
 import { QueriesModule } from './queries/queries.module';
-import { ExecuteQueriesModule } from './execute-queries/execute-queries.module';
+import { GenerateTemplateModule } from './generate-templates/execute-queries.module';
 import { TemplateModule } from './template/template.module';
 
 @Module({
@@ -33,8 +33,9 @@ import { TemplateModule } from './template/template.module';
     AdminModule,
     ServerModule,
     QueriesModule,
-    ExecuteQueriesModule,
-    TemplateModule],
+    GenerateTemplateModule,
+    TemplateModule,
+    ],
   controllers: [],
   providers: [],
 })

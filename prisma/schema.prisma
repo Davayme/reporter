@@ -133,7 +133,7 @@ model Template_Detail {
   templateId             Int
   statusActive           Boolean           @default(true)
   template               Template          @relation(fields: [templateId], references: [id_template])
-  operation              OperationType?    // Tipo de operación (e.g., sum, avg)
+  operation              OperationType?    
 
   @@map("template_details")
 }

@@ -7,7 +7,7 @@ import { OracleDatabase } from './OracleDatabase';
 import { SqlServerDatabase } from './SqlServerDatabase';
 
 @Injectable()
-export class DatabaseService {
+export class KnexService {
   private db: DatabaseInterface;
 
   async connect(server: Server): Promise<void> {
@@ -23,6 +23,7 @@ export class DatabaseService {
         break;
       case 'oracle':
         this.db = new OracleDatabase();
+        break;
       default:
         throw new Error('Unsupported database type');
     }
@@ -34,7 +35,6 @@ export class DatabaseService {
     if (!this.db) {
       throw new Error('Database connection not established');
     }
-
     return this.db.executeQuery(query);
   }
 }
