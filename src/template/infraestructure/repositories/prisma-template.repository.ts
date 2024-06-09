@@ -26,6 +26,19 @@ export class PrismaTemplateRepository implements TemplateRepository {
     });
   }
 
+  async findById(id_template: number): Promise<Template | null> {
+    return await this.prisma.template.findUnique({
+      where: { id_template },
+      include: {
+        query: {
+          include: {
+            Server: true,
+          },
+        },
+        templateDetails: true,
+      },
+    });
+  }
 
   async create(template: Omit<Template, 'id_template'>, details: Omit<Template_Detail, 'id_detail'>[]): Promise<Template> {
     try {
@@ -64,31 +77,19 @@ export class PrismaTemplateRepository implements TemplateRepository {
     }
   }
 
-  async update(id_template: number, template: Omit<Template, 'id_template'>, details: Template_Detail[]): Promise<Template> {
+  async update(id_template: number, template: Omit<Template, 'id_template'>): Promise<Template> {
     try {
-      const updatedTemplate = await this.prisma.template.update({
+      return await this.prisma.template.update({
         where: { id_template },
         data: {
           name: template.name,
           queryId: template.queryId,
           statusActive: template.statusActive,
-          templateDetails: {
-            updateMany: details.map(detail => ({
-              where: { id_detail: detail.id_detail },
-              data: {
-                field: detail.field,
-                typeField: detail.typeField,
-                statusActive: detail.statusActive,
-                operation: detail.operation, // Incluir el campo de operación
-              },
-            })),
-          },
         },
         include: {
           templateDetails: true,
         },
       });
-      return updatedTemplate;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
@@ -102,6 +103,7 @@ export class PrismaTemplateRepository implements TemplateRepository {
       }
     }
   }
+
   async delete(id_template: number): Promise<void> {
     try {
       await this.prisma.template.update({
