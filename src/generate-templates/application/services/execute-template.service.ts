@@ -24,7 +24,6 @@ export class ExecuteTemplateService {
     // Filtra los resultados según los campos del template
     let filteredResults;
     if (type === 'financial') {
-      console.log('Procesamiento financiero');
       const processedResults = this.processFinancialTemplate(results, template.templateDetails);
       filteredResults = {
         data: processedResults.filteredResults,
@@ -46,7 +45,7 @@ export class ExecuteTemplateService {
     return filteredResults;
   }
 
-  private processFinancialTemplate(results: any[], details: any[]): any {
+  private processFinancialTemplate(results: any[], details: any[]): { filteredResults: any[], totals: any } {
     const filteredResults = results.map(result => {
       const filteredResult = {};
       details.forEach(detail => {
@@ -60,8 +59,14 @@ export class ExecuteTemplateService {
     const totals = {};
     details.forEach(detail => {
       if (detail.operation === 'sum') {
-        totals[detail.field] = filteredResults.reduce((acc, row) => acc + (row[detail.field] || 0), 0);
+        if (!totals[detail.field]) {
+          totals[detail.field] = 0;
+        }
+        totals[detail.field] += filteredResults.reduce((acc, row) => acc + (row[detail.field] || 0), 0);
       } else if (detail.operation === 'avg') {
+        if (!totals[detail.field]) {
+          totals[detail.field] = 0;
+        }
         const sum = filteredResults.reduce((acc, row) => acc + (row[detail.field] || 0), 0);
         totals[detail.field] = sum / filteredResults.length;
       }

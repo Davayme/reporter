@@ -1,4 +1,4 @@
-import { IsString, IsEnum } from 'class-validator';
+import { IsString, IsEnum, IsNumber } from 'class-validator';
 
 enum TemplateType {
   LIST = 'list',
@@ -6,8 +6,8 @@ enum TemplateType {
 }
 
 export class ExecuteTemplateDto {
-  @IsString()
-  id_template: string;
+  @IsNumber()
+  id_template: number;
 
   @IsEnum(TemplateType)
   type_template: TemplateType;

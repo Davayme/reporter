@@ -5,16 +5,14 @@ import { PermissionsGuard } from "src/auth/infrastructure/guards/permissions.gua
 import { RolesGuard } from "src/auth/infrastructure/guards/roles.guard";
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 import { ExecuteTemplateService } from "src/generate-templates/application/services/execute-template.service";
+import { ExecuteTemplateDto } from "src/generate-templates/application/dtos/execute-template";
 
 @Controller('generateTemplates')
 export class ExecuteQueryController {
   constructor(private readonly executeTemplates : ExecuteTemplateService) {}
 
   @Post()
-  async executeTemplate(
-    @Body('id_template', ParseIntPipe) id_template: number,
-    @Body('type') type: string
-  ): Promise<any> {
-    return this.executeTemplates.executeTemplate(id_template, type);
+  async executeTemplate(@Body() executeTemplateDto: ExecuteTemplateDto): Promise<any> {
+    return this.executeTemplates.executeTemplate(executeTemplateDto.id_template, executeTemplateDto.type_template);
   }
 }
