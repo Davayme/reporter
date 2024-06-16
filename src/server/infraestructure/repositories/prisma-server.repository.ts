@@ -1,8 +1,7 @@
-
-// src/server/infrastructure/repositories/prisma-server.repository.ts
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { PrismaClient, Server } from '@prisma/client';
 import { ServerRepository } from '../../domain/repositories/server.repository';
+import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class PrismaServerRepository implements ServerRepository {
@@ -24,13 +23,18 @@ export class PrismaServerRepository implements ServerRepository {
         data: server,
       });
     } catch (error) {
-      if (error.code === 'P2002') {
-        throw new ConflictException('Server already exists');
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ConflictException('Server already exists');
+        }
+
+      } else if (error instanceof PrismaClientValidationError) {
+        throw new BadRequestException('Validation error in Prisma operation.');
       }
-      throw error;
+      throw new InternalServerErrorException('An unexpected error occurred.');
     }
   }
-
+  
   async update(id: number, server: Partial<Server>): Promise<Server> {
     try {
       return await this.prisma.server.update({
@@ -38,13 +42,18 @@ export class PrismaServerRepository implements ServerRepository {
         data: server,
       });
     } catch (error) {
-      if (error.code === 'P2025') {
-        throw new NotFoundException('Server not found');
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException('Server not found');
+        }
+
+      } else if (error instanceof PrismaClientValidationError) {
+        throw new BadRequestException('Validation error in Prisma operation.');
       }
-      throw error;
+      throw new InternalServerErrorException('An unexpected error occurred.');
     }
   }
-
+  
   async delete(id: number): Promise<Server> {
     try {
       return await this.prisma.server.update({
@@ -52,10 +61,15 @@ export class PrismaServerRepository implements ServerRepository {
         data: { statusActive: false },
       });
     } catch (error) {
-      if (error.code === 'P2025') {
-        throw new NotFoundException('Server not found');
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException('Server not found');
+        }
+
+      } else if (error instanceof PrismaClientValidationError) {
+        throw new BadRequestException('Validation error in Prisma operation.');
       }
-      throw error;
+      throw new InternalServerErrorException('An unexpected error occurred.');
     }
   }
 
