@@ -7,10 +7,9 @@ export class ExecuteTemplateService {
   constructor(
     private readonly knexService: KnexService,
     @Inject('GenerateTemplateRepository') private templateRepository: GenerateTemplateRepository,
-  ) {}
+  ) { }
 
   async executeTemplate(id_template: number, type: string): Promise<any> {
-   
     const template = await this.templateRepository.findTemplateById(id_template);
     if (!template) {
       throw new NotFoundException(`Template with ID ${id_template} not found`);
@@ -25,8 +24,12 @@ export class ExecuteTemplateService {
     // Filtra los resultados según los campos del template
     let filteredResults;
     if (type === 'financial') {
-      
-      filteredResults = this.processFinancialTemplate(results, template.templateDetails);
+      console.log('Procesamiento financiero');
+      const processedResults = this.processFinancialTemplate(results, template.templateDetails);
+      filteredResults = {
+        data: processedResults.filteredResults,
+        totals: processedResults.totals
+      };
     } else {
       // Procesamiento general
       filteredResults = results.map(result => {
@@ -43,21 +46,30 @@ export class ExecuteTemplateService {
     return filteredResults;
   }
 
-  private processFinancialTemplate(results: any[], details: any[]): any[] {
-    // Lógica específica para templates financieros
-    return results.map(result => {
+  private processFinancialTemplate(results: any[], details: any[]): any {
+    const filteredResults = results.map(result => {
       const filteredResult = {};
-      let total = 0;
       details.forEach(detail => {
         if (result.hasOwnProperty(detail.field)) {
           filteredResult[detail.field] = result[detail.field];
-          if (detail.field === 'amount') {
-            total += result[detail.field];
-          }
         }
       });
-      filteredResult['total'] = total;
       return filteredResult;
     });
+
+    const totals = {};
+    details.forEach(detail => {
+      if (detail.operation === 'sum') {
+        totals[detail.field] = filteredResults.reduce((acc, row) => acc + (row[detail.field] || 0), 0);
+      } else if (detail.operation === 'avg') {
+        const sum = filteredResults.reduce((acc, row) => acc + (row[detail.field] || 0), 0);
+        totals[detail.field] = sum / filteredResults.length;
+      }
+    });
+
+    return {
+      filteredResults,
+      totals
+    };
   }
 }

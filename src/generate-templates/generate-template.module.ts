@@ -4,7 +4,6 @@ import { AuthModule } from 'src/auth/auth.module';
 import { KnexService } from './infraestructure/knex-service/knex.service';
 import { ExecuteTemplateService } from './application/services/execute-template.service';
 import { PrismaTemplateRepository } from './infraestructure/repositories/prisma-template.repository';
-import { PrismaClient } from '@prisma/client';
 import { ExecuteQueryController } from './infraestructure/controllers/execute-template.controller';
 
 
@@ -14,7 +13,6 @@ import { ExecuteQueryController } from './infraestructure/controllers/execute-te
   providers: [
     ExecuteTemplateService,
     KnexService,
-
     {
       provide: 'GenerateTemplateRepository',
       useClass: PrismaTemplateRepository,
