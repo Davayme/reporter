@@ -5,7 +5,7 @@ import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // Elimina propiedades que no están en el DTO
     forbidNonWhitelisted: true, // Lanza un error si hay propiedades no permitidas
@@ -15,7 +15,7 @@ async function bootstrap() {
       return new BadRequestException(
         errors.map(error => ({
           field: error.property,
-          errors: Object.values(error.constraints),
+          errors: error.constraints ? Object.values(error.constraints) : ['Unspecified error'],
         })),
       );
     },

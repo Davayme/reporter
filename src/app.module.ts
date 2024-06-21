@@ -9,8 +9,9 @@ import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
 import { ServerModule } from './server/server.module';
 import { QueriesModule } from './queries/queries.module';
-import { ExecuteQueriesModule } from './execute-queries/execute-queries.module';
-import { TestModule } from './test/test.module';
+import { GenerateTemplateModule } from './generate-templates/generate-template.module';
+import { TemplateModule } from './template/template.module';
+import { TemplateDetailModule } from './template_detail/template_detail.module';
 
 @Module({
   imports: [
@@ -33,8 +34,10 @@ import { TestModule } from './test/test.module';
     AdminModule,
     ServerModule,
     QueriesModule,
-    ExecuteQueriesModule,
-    TestModule],
+    GenerateTemplateModule,
+    TemplateModule,
+    TemplateDetailModule,
+    ],
   controllers: [],
   providers: [],
 })
