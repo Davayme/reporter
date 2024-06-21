@@ -1,7 +1,21 @@
 // src/server/infrastructure/controllers/server.controller.ts
-import { Controller, Post, Body, UseGuards, ValidationPipe, Get, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  ValidationPipe,
+  Get,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CreateServerService } from '../../application/services/create-server.service';
-import { CreateServerCommand, DeleteServerCommand, UpdateServerCommand } from 'src/server/application/commands/server.command';
+import {
+  CreateServerCommand,
+  DeleteServerCommand,
+  UpdateServerCommand,
+} from 'src/server/application/commands/server.command';
 import { CreateServerDto } from 'src/server/application/dto/create-server.dto';
 import { Server } from '@prisma/client';
 import { GetAllServersService } from 'src/server/application/services/get-all-servers.service';
@@ -12,33 +26,40 @@ import { JwtAuthGuard } from 'src/auth/infrastructure/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
 import { PermissionsGuard } from 'src/auth/infrastructure/guards/permissions.guard';
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
+import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
 
 @Controller('servers')
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
+@Roles('admin')
 export class ServerController {
   constructor(
     private readonly createServerService: CreateServerService,
     private readonly getAllServersService: GetAllServersService,
     private readonly updateServerService: UpdateServerService,
-    private readonly deleteServerService: DeleteServerService
+    private readonly deleteServerService: DeleteServerService,
   ) {}
 
   @Permissions('read')
-  @Get() 
+  @Get()
   async findAll(): Promise<Server[]> {
     return this.getAllServersService.execute();
   }
 
   @Permissions('create')
   @Post()
-  async create(@Body(new ValidationPipe()) createServerDto: CreateServerDto): Promise<Server> {
+  async create(
+    @Body(new ValidationPipe()) createServerDto: CreateServerDto,
+  ): Promise<Server> {
     const command = new CreateServerCommand(createServerDto);
     return this.createServerService.execute(command);
   }
 
   @Permissions('update')
   @Patch(':id')
-  async update(@Param('id') id: number, @Body(new ValidationPipe()) updateServerDto: UpdateServerDto): Promise<Server> {
+  async update(
+    @Param('id') id: number,
+    @Body(new ValidationPipe()) updateServerDto: UpdateServerDto,
+  ): Promise<Server> {
     const command = new UpdateServerCommand(id, updateServerDto);
     return this.updateServerService.execute(command);
   }
