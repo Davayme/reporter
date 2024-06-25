@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateTemplateDetailsCommand, DeleteTemplateDetailCommand, UpdateTemplateDetailsCommand } from 'src/template_detail/applicaction/commands/template-detail.command';
 import { CreateTemplateDetailsDto } from 'src/template_detail/applicaction/dtos/create-template-detail.dto';
 import { DeleteTemplateDetailDto } from 'src/template_detail/applicaction/dtos/delete-template-detail.dto';
@@ -7,7 +8,7 @@ import { CreateTemplateDetailsService } from 'src/template_detail/applicaction/s
 import { DeleteTemplateDetailService } from 'src/template_detail/applicaction/services/delete-template-detail.service';
 import { UpdateTemplateDetailsService } from 'src/template_detail/applicaction/services/update-template-details.service';
 
-
+@ApiTags('template-detail')
 @Controller('template-detail')
 export class TemplateDetailController {
   constructor(

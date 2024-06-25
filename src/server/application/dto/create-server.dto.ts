@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsInt, IsNotEmpty, IsOptional, IsBoolean, IsEnum } from 'class-validator';
 
 enum DbType {
@@ -8,6 +9,7 @@ enum DbType {
 }
 
 export class CreateServerDto {
+  @ApiProperty({ description: 'El ID del ejemplo' })
   @IsString()
   @IsNotEmpty()
   name: string;

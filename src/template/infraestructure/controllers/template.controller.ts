@@ -7,6 +7,9 @@ import { CreateTemplateService } from 'src/template/application/services/create-
 import { UpdateTemplateService } from 'src/template/application/services/update-template.service';
 import { UpdateTemplateDto } from 'src/template/application/dto/update-template.dto';
 import { DeleteTemplateService } from 'src/template/application/services/delete-template.service';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('templates')
 @Controller('templates')
 export class TemplateController {
   constructor(private readonly getAllTemplate: GetAllTemplateService

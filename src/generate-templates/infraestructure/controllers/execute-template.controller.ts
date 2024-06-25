@@ -6,7 +6,9 @@ import { RolesGuard } from "src/auth/infrastructure/guards/roles.guard";
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 import { ExecuteTemplateService } from "src/generate-templates/application/services/execute-template.service";
 import { ExecuteTemplateDto } from "src/generate-templates/application/dtos/execute-template";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('generateTemplates')
 @Controller('generateTemplates')
 export class ExecuteQueryController {
   constructor(private readonly executeTemplates : ExecuteTemplateService) {}
