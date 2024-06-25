@@ -13,7 +13,7 @@ import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
 import { PermissionsGuard } from 'src/auth/infrastructure/guards/permissions.guard';
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('queries')
 @Controller('queries')
@@ -27,16 +27,23 @@ export class QueryController {
         private readonly deleteQueryService: DeleteQueryService
     ) { }
 
+    @ApiOperation({ summary: 'Obtener las consultas sql existentes' })
+    @ApiResponse({ status: 200, description: 'Retornar el json de las con las consultas sql existentes' })
     @Get()
     async getAllQueries(): Promise<Query[]> {
         return this.getQueries.execute();
     }
 
+    @ApiOperation({ summary: 'Obtener las consultas sql existentes de un determinado servidor' })
+    @ApiResponse({ status: 200, description: 'Retornar el json de las con las consultas sql existentes de un determinado servidor' })
+    @ApiParam({ name: 'serverId', description: 'El ID del servidor que se va a buscar. Debe ser un número entero positivo.', type: Number, required: true })
     @Get('server/:serverId')
     async getAllQueriesByServerId(@Param('serverId', ParseIntPipe) serverId: number): Promise<any[]> {
         return this.getQueriesByServerIdService.execute(serverId);
     }
 
+    @ApiOperation({ summary: 'Crear una nueva consulta sql' })
+    @ApiResponse({ status: 201, description: 'Retornar el json de la consulta sql creada' })
     @Permissions('create')
     @Roles('user')
     @Post()
@@ -44,16 +51,34 @@ export class QueryController {
         const command = new CreateQueryCommand(createQueryDto);
         return this.createQueryService.execute(command);
     }
+
+
+    @ApiOperation({ summary: 'Actualizar una consulta sql' })
+    @ApiParam({
+        name: 'id',
+        description: 'El ID de la consulta SQL que se va a actualizar. Debe ser un número entero positivo.',
+        type: Number,
+        required: true
+    })
+    @ApiResponse({ status: 200, description: 'La consulta sql se actualizo correctamente' })
     @Patch(':id')
     async updateQuery(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) updateQueryDto: UpdateQueryDto): Promise<Query> {
-      const command = new UpdateQueryCommand(id, updateQueryDto);
-      return this.updateQueryService.execute(command);
+        const command = new UpdateQueryCommand(id, updateQueryDto);
+        return this.updateQueryService.execute(command);
     }
-  
+
+    @ApiOperation({ summary: 'Eliminar una consulta sql' })
+    @ApiParam({
+        name: 'id',
+        description: 'El ID de la consulta SQL que se va a eliminar. Debe ser un número entero positivo.',
+        type: Number,
+        required: true
+    })
+    @ApiResponse({ status: 200, description: 'La consulta sql se elimino correctamente' })
     @Delete(':id')
     async deleteQuery(@Param('id', ParseIntPipe) id: number): Promise<Query> {
-      const command = new DeleteQueryCommand(id);
-      return this.deleteQueryService.execute(command);
+        const command = new DeleteQueryCommand(id);
+        return this.deleteQueryService.execute(command);
     }
 
 }

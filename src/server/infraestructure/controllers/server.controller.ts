@@ -27,7 +27,7 @@ import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
 import { PermissionsGuard } from 'src/auth/infrastructure/guards/permissions.guard';
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('servers')
 @Controller('servers')
@@ -39,14 +39,19 @@ export class ServerController {
     private readonly getAllServersService: GetAllServersService,
     private readonly updateServerService: UpdateServerService,
     private readonly deleteServerService: DeleteServerService,
-  ) {}
+  ) { }
 
   @Permissions('read')
+  @ApiOperation({ summary: 'Obtener todos los servidores existentes' })
+  @ApiResponse({ status: 200, description: 'Retornar el json con los datos de los servidores' })
   @Get()
   async findAll(): Promise<Server[]> {
     return this.getAllServersService.execute();
   }
-
+  
+  @ApiOperation({ summary: 'Crear un nuevo servidor' })
+  @ApiResponse({ status: 201, description: 'Retornar el json del servidor creado' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Permissions('create')
   @Post()
   async create(
@@ -56,6 +61,10 @@ export class ServerController {
     return this.createServerService.execute(command);
   }
 
+  @ApiOperation({ summary: 'Actualizar un servidor' })
+  @ApiResponse({ status: 200, description: 'Servidor actualizado correctamente' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiParam({ name: 'id', description: 'El ID del servidor que se va a actualizar. Debe ser un número entero positivo.', type: Number, required: true })
   @Permissions('update')
   @Patch(':id')
   async update(
@@ -66,6 +75,10 @@ export class ServerController {
     return this.updateServerService.execute(command);
   }
 
+  @ApiOperation({ summary: 'Eliminar un servidor' })
+  @ApiResponse({ status: 200, description: 'Servidor eliminado correctamente' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiParam({ name: 'id', description: 'El ID del servidor que se va a eliminar. Debe ser un número entero positivo.', type: Number, required: true })
   @Permissions('delete')
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<Server> {

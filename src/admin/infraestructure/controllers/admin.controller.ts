@@ -23,7 +23,9 @@ import { AssignMenuDto } from 'src/admin/application/dtos/assign-menu.dto';
 import { RemoveMenuDto } from 'src/admin/application/dtos/remove-menu.dto';
 import { AssignMenuService } from 'src/admin/application/services/menu/assign-menu.service';
 import { RemoveMenuService } from 'src/admin/application/services/remove-menu.service';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('admin')
 @Controller('admin')
 @UseFilters(HttpExceptionFilter)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -42,16 +44,26 @@ export class AdminController {
     private readonly removeMenuService: RemoveMenuService,
   ) {}
 
+  @ApiOperation({ summary: 'Obtener todos los usuarios existentes' })
+  @ApiResponse({ status: 200, description: 'Retornar el json con los datos de los usuarios' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Get('users')
   async getAllUsers(): Promise<UserResponseDto[]> {
     return this.getAllUsersService.execute();
   }
 
+  @ApiOperation({ summary: 'Crear un nuevo usuario' })
+  @ApiResponse({ status: 201, description: 'Retornar el json del usuario creado' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Post('users')
   async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
     return this.createUserService.execute(createUserDto);
   }
 
+  @ApiOperation({ summary: 'Actualizar un usuario' })
+  @ApiResponse({ status: 200, description: 'Usuario actualizado correctamente' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiParam({ name: 'id', description: 'Id del usuario', type: Number, required: true })
   @Patch('users/:id')
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -61,6 +73,10 @@ export class AdminController {
     await this.updateUserService.execute(command);
   }
 
+  @ApiOperation({ summary: 'Eliminar un usuario' })
+  @ApiResponse({ status: 200, description: 'Usuario eliminado correctamente' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiParam({ name: 'id', description: 'Id del usuario', type: Number, required: true })
   @Delete('users/:id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     const command = new DeleteUserCommand(id);

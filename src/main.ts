@@ -26,12 +26,19 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('API proyecto reporteador')
-    .setDescription('Descripción de la API')
+    .setDescription('Proyecto de la materia Patrones de software')
+    .addTag('admin', 'Aquí va la descripción detallada del tag admin')
+    .addTag('menu', 'Aquí va la descripción detallada del tag menu')
+    .addTag('auth', 'Aquí va la descripción detallada del tag auth')
+    .addTag('servers', 'Endpoints para la gestión de servidores')
+    .addTag('queries', 'Endpoints para la gestión de consultas SQL')
+    .addTag('generateTemplates', 'Endpoints para la obtencion de datos de las plantillas')
+    .addTag('templates', 'Endpoints para la gestión de plantillas')
+    .addTag('template-detail', 'Endpoints para la gestión de detalles de plantillas')
     .setVersion('1.0')
-    .addTag('tags')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
   await app.listen(3000);
 }
 bootstrap();

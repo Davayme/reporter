@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTemplateDetailsCommand, DeleteTemplateDetailCommand, UpdateTemplateDetailsCommand } from 'src/template_detail/applicaction/commands/template-detail.command';
 import { CreateTemplateDetailsDto } from 'src/template_detail/applicaction/dtos/create-template-detail.dto';
 import { DeleteTemplateDetailDto } from 'src/template_detail/applicaction/dtos/delete-template-detail.dto';
@@ -17,6 +17,13 @@ export class TemplateDetailController {
     private readonly deleteTemplateDetailService: DeleteTemplateDetailService
   ) { }
 
+  @ApiOperation({ summary: 'Crear un nuevo detalle de plantilla' })
+  @ApiResponse({ status: 201, description: 'Retornar el json del detalle de plantilla creado' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiParam({ name: 'templateId', 
+    description: 'Id de la plantilla a la que pertenece el detalle',
+   type: Number,
+   required: true})
   @Post(':templateId')
   async create(
     @Param('templateId', ParseIntPipe) templateId: number,
@@ -26,6 +33,9 @@ export class TemplateDetailController {
     return this.createTemplateDetailsService.create(command);
   }
 
+  @ApiOperation({ summary: 'Actualizar un detalle de plantilla' })
+  @ApiResponse({ status: 200, description: 'Detalle de plantilla actualizado correctamente' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Patch()
   async updateTemplateDetails(
     @Body() updateTemplateDetailsDto: UpdateTemplateDetailsDto
@@ -34,6 +44,9 @@ export class TemplateDetailController {
     return this.updateTemplateDetailsService.update(command);
   }
 
+  @ApiOperation({ summary: 'Eliminar un detalle de plantilla' })
+  @ApiResponse({ status: 200, description: 'Detalle de plantilla eliminado correctamente' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Delete()
   async deleteTemplateDetails(
     @Body() deleteTemplateDetailDto: DeleteTemplateDetailDto

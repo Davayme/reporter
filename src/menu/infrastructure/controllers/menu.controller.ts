@@ -4,8 +4,11 @@ import { RolesGuard } from '../../../auth/infrastructure/guards/roles.guard';
 import { CheckPermissionsService } from '../../application/services/check-permissions.service';
 import { Request } from 'express';
 import { User } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('menu')
 @Controller('menu')
+
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class MenuController {
   constructor(private readonly checkPermissionsService: CheckPermissionsService) {}
