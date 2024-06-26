@@ -36,7 +36,7 @@ export class QueryController {
     }
 
     @Permissions('create')
-    @Roles('user')
+    @Roles('user', 'admin')
     @Post()
     async createQuery(@Body(new ValidationPipe()) createQueryDto: CreateQueryDto): Promise<Query> {
         const command = new CreateQueryCommand(createQueryDto);
