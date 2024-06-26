@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AdminModule } from './admin/admin.module';
+import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import jwtConfig from './common/config/jwt.config';
 import { PrismaModule } from './prisma/prisma.module';
@@ -32,6 +33,7 @@ import { TemplateDetailModule } from './template_detail/template_detail.module';
     MenuModule,
     AuthModule,
     AdminModule,
+    UserModule,
     ServerModule,
     QueriesModule,
     GenerateTemplateModule,
