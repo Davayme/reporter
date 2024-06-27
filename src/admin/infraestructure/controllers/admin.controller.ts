@@ -23,13 +23,14 @@ import { AssignMenuDto } from 'src/admin/application/dtos/assign-menu.dto';
 import { RemoveMenuDto } from 'src/admin/application/dtos/remove-menu.dto';
 import { AssignMenuService } from 'src/admin/application/services/menu/assign-menu.service';
 import { RemoveMenuService } from 'src/admin/application/services/remove-menu.service';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('admin')
 @Controller('admin')
 @UseFilters(HttpExceptionFilter)
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('admin')
+@ApiBearerAuth()
 export class AdminController {
   constructor(
     private readonly createUserService: CreateUserService,

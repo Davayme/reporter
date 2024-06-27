@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTemplateDetailsCommand, DeleteTemplateDetailCommand, UpdateTemplateDetailsCommand } from 'src/template_detail/applicaction/commands/template-detail.command';
 import { CreateTemplateDetailsDto } from 'src/template_detail/applicaction/dtos/create-template-detail.dto';
 import { DeleteTemplateDetailDto } from 'src/template_detail/applicaction/dtos/delete-template-detail.dto';
@@ -10,6 +10,7 @@ import { UpdateTemplateDetailsService } from 'src/template_detail/applicaction/s
 
 @ApiTags('template-detail')
 @Controller('template-detail')
+@ApiBearerAuth()
 export class TemplateDetailController {
   constructor(
     private readonly createTemplateDetailsService: CreateTemplateDetailsService,

@@ -27,12 +27,13 @@ import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
 import { PermissionsGuard } from 'src/auth/infrastructure/guards/permissions.guard';
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('servers')
 @Controller('servers')
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
 @Roles('admin')
+@ApiBearerAuth()
 export class ServerController {
   constructor(
     private readonly createServerService: CreateServerService,
@@ -45,6 +46,7 @@ export class ServerController {
   @ApiOperation({ summary: 'Obtener todos los servidores existentes' })
   @ApiResponse({ status: 200, description: 'Retornar el json con los datos de los servidores' })
   @Get()
+  @Roles('admin', 'user')
   async findAll(): Promise<Server[]> {
     return this.getAllServersService.execute();
   }

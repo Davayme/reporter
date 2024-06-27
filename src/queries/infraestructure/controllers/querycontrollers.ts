@@ -13,10 +13,11 @@ import { RolesGuard } from 'src/auth/infrastructure/guards/roles.guard';
 import { PermissionsGuard } from 'src/auth/infrastructure/guards/permissions.guard';
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 import { Roles } from 'src/auth/infrastructure/decorators/roles.decorator';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('queries')
 @Controller('queries')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
 export class QueryController {
     constructor(
@@ -45,7 +46,7 @@ export class QueryController {
     @ApiOperation({ summary: 'Crear una nueva consulta sql' })
     @ApiResponse({ status: 201, description: 'Retornar el json de la consulta sql creada' })
     @Permissions('create')
-    @Roles('user')
+    @Roles('user', 'admin')
     @Post()
     async createQuery(@Body(new ValidationPipe()) createQueryDto: CreateQueryDto): Promise<Query> {
         const command = new CreateQueryCommand(createQueryDto);

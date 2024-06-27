@@ -6,9 +6,10 @@ import { RolesGuard } from "src/auth/infrastructure/guards/roles.guard";
 import { Permissions } from 'src/auth/infrastructure/decorators/permissions.decorator';
 import { ExecuteTemplateService } from "src/generate-templates/application/services/execute-template.service";
 import { ExecuteTemplateDto } from "src/generate-templates/application/dtos/execute-template";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('generateTemplates')
+@ApiBearerAuth()
 @Controller('generateTemplates')
 export class ExecuteQueryController {
   constructor(private readonly executeTemplates : ExecuteTemplateService) {}
